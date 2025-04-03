@@ -1,5 +1,3 @@
-import threading
-from typing import List
 from repository.session_repository import SessionRepository
 from semantic_kernel.connectors.ai.chat_completion_client_base import ChatCompletionClientBase
 import uuid
@@ -7,11 +5,10 @@ from models import Message
 from contract import ChatRequest
 from config import Config
 from semantic_kernel.contents.chat_history import ChatHistory
-from factory import AgentFactory
 from semantic_kernel import Kernel
-from services import SearchService
+from services.search_service import SearchService
 from semantic_kernel.functions.kernel_arguments import KernelArguments
-from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChatPromptExecutionSettings
+from semantic_kernel.connectors.ai.open_ai import AzureChatPromptExecutionSettings
 
 class ChatService:
 

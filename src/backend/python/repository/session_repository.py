@@ -1,6 +1,3 @@
-# repository/session_repository.py
-import os
-import threading
 from azure.cosmos.aio import ContainerProxy
 from typing import List, Optional
 from models import Session, Message
@@ -9,16 +6,6 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 class SessionRepository:
-
-    _instance = None
-    _lock = threading.Lock()
-
-    def __new__(cls,*args, **kwargs):
-        if cls._instance is None:
-            with cls._lock:
-                if cls._instance is None:
-                    cls._instance = super(SessionRepository, cls).__new__(cls)             
-        return cls._instance
 
     def __init__(self, container: ContainerProxy):
         self.container = container

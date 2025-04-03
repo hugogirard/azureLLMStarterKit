@@ -1,22 +1,36 @@
 from fastapi import FastAPI
 from repository.session_repository import SessionRepository
-from services import ChatService, SearchService
 from azure.cosmos.aio import CosmosClient
-from services import ChatService, SearchService
+from services.chat_service import ChatService
+from services.search_service import SearchService
+from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 from semantic_kernel import Kernel
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChatPromptExecutionSettings
 from semantic_kernel.connectors.ai.function_choice_behavior import FunctionChoiceBehavior
 from config import Config
+from routes import routes
+
+config = Config()
 
 app = FastAPI()
 
-config = Config()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+for route in routes:
+    app.include_router(route,prefix="/api")
 
 @app.on_event("startup")
 async def startup_event():
         
     cosmos_client = CosmosClient(url=config.cosmosdb_endpoint(), 
-                                    credential=config.cosmosdb_key())
+                                 credential=config.cosmosdb_key())
     
     db = cosmos_client.get_database_client(config.cosmos_database())
 
@@ -58,3 +72,7 @@ async def startup_event():
 async def shutdown_event():
     # Perform any cleanup if necessary (e.g., closing connections)
     pass    
+
+@app.get('/', include_in_schema=False)
+async def root():
+    return RedirectResponse(url="/docs")
