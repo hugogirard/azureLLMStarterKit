@@ -1,0 +1,3 @@
+### Create a new session
+POST http://0.0.0.0:8000/api/session/new
+Content-Type: application/json

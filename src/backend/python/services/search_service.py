@@ -13,4 +13,7 @@ class SearchService:
         self.search_client = SearchClient(endpoint=config.search_ai_endpoint(),
                                           index_name=config.search_ai_index(),
                                           credential=credential)
+
+    def dispose(self):
+        self.search_client.close()
         
