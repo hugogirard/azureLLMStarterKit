@@ -103,5 +103,28 @@ module cosmosdb 'br/public:avm/res/document-db/database-account:0.12.0' = {
   }
 }
 
-@description('Name ')
+/* AI Services */
+
+module openai 'br/public:avm/res/cognitive-services/account:0.10.2' = {
+  scope: rg
+  params: {
+    name: 'openai-${suffix}'
+    kind: 'OpenAI'
+    location: location
+    // deployments: [
+    //   {
+    //     model: {
+    //       name: 'gpt4o-mini'
+    //       format: 'OpenAI'
+    //       version: ''
+    //     }        
+    //   }
+    // ]
+  }
+}
+
+/* Output */
+
 output backendResourceName string = backend.outputs.name
+output frontEndResourceName string = frontend.outputs.name
+output openaiResourceName string = openai.outputs.name
