@@ -68,5 +68,33 @@ module frontend 'br/public:avm/res/web/site:0.15.1' = {
   }
 }
 
+/* CosmosDB needed for chat history */
+module cosmosdb 'br/public:avm/res/document-db/database-account:0.12.0' = {
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    name: 'cosmosdb-${suffix}'
+    location: location
+    sqlDatabases: [
+      {
+        name: 'chat'
+        containers: [
+          {
+            name: 'conversation'
+            indexingPolicy: {
+              automatic: true
+            }
+            paths: [
+              '/username'
+              'sessionId'
+            ]
+          }
+        ]
+        throughput: 1000
+        autoscaleSettingsMaxThroughput: 1000
+      }
+    ]
+  }
+}
+
 @description('Name ')
 output backendResourceName string = backend.outputs.name
