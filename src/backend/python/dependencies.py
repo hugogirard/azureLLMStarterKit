@@ -16,7 +16,7 @@ _isDevelopment = _config.is_development()
 _user_principal_name = _config.user_principal_name_dev()
 
 # Configure logger
-_logger = logging.getLogger('openai_api')
+_logger = logging.getLogger('chatapi')
 
 if _config.is_development():
     _logger.setLevel(logging.DEBUG)

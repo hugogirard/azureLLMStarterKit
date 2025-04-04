@@ -12,6 +12,13 @@ from semantic_kernel.connectors.ai.open_ai import AzureChatPromptExecutionSettin
 
 class ChatService:
 
+    SYSTEM_PROMPT = (
+        "You are an AI assistant with access to the following context from documents.\n"
+        "Use the information to answer the question accurately. If the context is insufficient, say you don't know.\n\n"
+        "Please provide a concise and informative answer based on the context provided.\n\n"
+        "always provide citation for the answer and generate response in Markdown format.\n"
+    )
+
     def __init__(self, 
                  session_repository: SessionRepository, 
                  search_service: SearchService,
@@ -25,9 +32,15 @@ class ChatService:
     
     async def completion(self, chat_request: ChatRequest, username: str) -> Message:
 
+        context = await self.search_service.search(chat_request.question)
+
+        system_prompt = self._build_system_prompt(context)
+
         messages = await self.session_repository.get_session_messages(session_id=chat_request.session_id,username=username)
 
         history = ChatHistory()
+
+        history.add_system_message(system_prompt)
 
         for message in messages:
             history.add_user_message(message.prompt)
@@ -54,3 +67,5 @@ class ChatService:
 
         return new_message            
 
+    def _build_system_prompt(self, context: str) -> str:
+        return f"{self.SYSTEM_PROMPT} Context: {context}"        

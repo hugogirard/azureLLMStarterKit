@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from typing import List
 import os
 
 ###########################################################
@@ -49,3 +50,6 @@ class Config:
     
     def openai_embedding_deployment(self) -> str:
         return os.getenv('AZURE_OPENAI_EMB_DEPLOYMENT_NAME')
+    
+    def query_vector_field_name(self) -> str:
+        return os.getenv('QUERY_VECTOR_FIELD')
