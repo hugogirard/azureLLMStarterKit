@@ -92,7 +92,7 @@ module cosmosdb 'br/public:avm/res/document-db/database-account:0.12.0' = {
             }
             paths: [
               '/username'
-              'sessionId'
+              '/sessionId'
             ]
           }
         ]
@@ -111,15 +111,16 @@ module openai 'br/public:avm/res/cognitive-services/account:0.10.2' = {
     name: 'openai-${suffix}'
     kind: 'OpenAI'
     location: location
-    // deployments: [
-    //   {
-    //     model: {
-    //       name: 'gpt4o-mini'
-    //       format: 'OpenAI'
-    //       version: ''
-    //     }        
-    //   }
-    // ]
+    deployments: [
+      {
+        name: 'gpt-4o-mini'
+        model: {
+          name: 'gpt-4o-mini'
+          format: 'OpenAI'
+          version: '2024-07-18'
+        }
+      }
+    ]
   }
 }
 
