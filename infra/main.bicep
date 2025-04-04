@@ -111,16 +111,20 @@ module openai 'br/public:avm/res/cognitive-services/account:0.10.2' = {
     name: 'openai-${suffix}'
     kind: 'OpenAI'
     location: location
-    deployments: [
-      {
-        name: 'gpt-4o-mini'
-        model: {
-          name: 'gpt-4o-mini'
-          format: 'OpenAI'
-          version: '2024-07-18'
-        }
-      }
-    ]
+  }
+}
+
+module search 'br/public:avm/res/search/search-service:0.7.2' = {
+  scope: rg
+  params: {
+    name: 'search-${suffix}'
+    location: location
+    managedIdentities: {
+      systemAssigned: true
+    }
+    partitionCount: 1
+    replicaCount: 1
+    sku: 'standard'
   }
 }
 
