@@ -42,5 +42,6 @@ module appserviceplan 'br/public:avm/res/web/serverfarm:0.4.1' = {
     skuCapacity: 1
     skuName: 'P1mv3'
     location: location
+    zoneRedundant: false
   }
 }
