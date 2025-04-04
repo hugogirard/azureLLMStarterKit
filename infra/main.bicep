@@ -15,6 +15,8 @@ module rg 'br/public:avm/res/resources/resource-group:0.4.1' = {
 
 var suffix = uniqueString(rg.outputs.resourceId)
 
+/* Storage needed for upload and training data for the RAG */
+
 module storage 'br/public:avm/res/storage/storage-account:0.19.0' = {
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -34,6 +36,8 @@ module storage 'br/public:avm/res/storage/storage-account:0.19.0' = {
   }
 }
 
+/* Hosting for frontend and backend on App Service */
+
 module appserviceplan 'br/public:avm/res/web/serverfarm:0.4.1' = {
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -45,3 +49,24 @@ module appserviceplan 'br/public:avm/res/web/serverfarm:0.4.1' = {
     zoneRedundant: false
   }
 }
+
+module backend 'br/public:avm/res/web/site:0.15.1' = {
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    name: 'api-${suffix}'
+    kind: 'app,linux,container'
+    serverFarmResourceId: appserviceplan.outputs.resourceId
+  }
+}
+
+module frontend 'br/public:avm/res/web/site:0.15.1' = {
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    name: 'front-${suffix}'
+    kind: 'app,linux,container'
+    serverFarmResourceId: appserviceplan.outputs.resourceId
+  }
+}
+
+@description('Name ')
+output backendResourceName string = backend.outputs.name
