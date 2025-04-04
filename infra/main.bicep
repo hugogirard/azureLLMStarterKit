@@ -16,7 +16,7 @@ module rg 'br/public:avm/res/resources/resource-group:0.4.1' = {
 var suffix = uniqueString(rg.outputs.resourceId)
 
 module storage 'br/public:avm/res/storage/storage-account:0.19.0' = {
-  scope: resourceGroup(rg.name)
+  scope: resourceGroup(resourceGroupName)
   params: {
     name: 'str${suffix}'
     allowBlobPublicAccess: true
@@ -35,7 +35,7 @@ module storage 'br/public:avm/res/storage/storage-account:0.19.0' = {
 }
 
 module appserviceplan 'br/public:avm/res/web/serverfarm:0.4.1' = {
-  scope: resourceGroup(rg.name)
+  scope: resourceGroup(resourceGroupName)
   params: {
     name: 'asp-${suffix}'
     kind: 'linux'
