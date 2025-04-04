@@ -76,6 +76,13 @@ module cosmosdb 'br/public:avm/res/document-db/database-account:0.12.0' = {
     location: location
     enableMultipleWriteLocations: false
     automaticFailover: false
+    locations: [
+      {
+        failoverPriority: 0
+        isZoneRedundant: false
+        locationName: location
+      }
+    ]
     sqlDatabases: [
       {
         name: 'chat'
