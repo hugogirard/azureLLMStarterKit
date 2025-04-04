@@ -6,19 +6,17 @@ param location string
 @description('The name of the resource group')
 param resourceGroupName string
 
-module rg 'br/public:avm/res/resources/resource-group:0.4.1' = {
-  params: {
-    name: resourceGroupName
-    location: location
-  }
+resource rg 'Microsoft.Resources/resourceGroups@2024-11-01' = {
+  name: resourceGroupName
+  location: location
 }
 
-var suffix = uniqueString(rg.outputs.resourceId)
+var suffix = uniqueString(rg.id)
 
 /* Storage needed for upload and training data for the RAG */
 
 module storage 'br/public:avm/res/storage/storage-account:0.19.0' = {
-  scope: resourceGroup(resourceGroupName)
+  scope: rg
   params: {
     name: 'str${suffix}'
     allowBlobPublicAccess: true
@@ -39,7 +37,7 @@ module storage 'br/public:avm/res/storage/storage-account:0.19.0' = {
 /* Hosting for frontend and backend on App Service */
 
 module appserviceplan 'br/public:avm/res/web/serverfarm:0.4.1' = {
-  scope: resourceGroup(resourceGroupName)
+  scope: rg
   params: {
     name: 'asp-${suffix}'
     kind: 'linux'
@@ -51,7 +49,7 @@ module appserviceplan 'br/public:avm/res/web/serverfarm:0.4.1' = {
 }
 
 module backend 'br/public:avm/res/web/site:0.15.1' = {
-  scope: resourceGroup(resourceGroupName)
+  scope: rg
   params: {
     name: 'api-${suffix}'
     kind: 'app,linux,container'
@@ -60,7 +58,7 @@ module backend 'br/public:avm/res/web/site:0.15.1' = {
 }
 
 module frontend 'br/public:avm/res/web/site:0.15.1' = {
-  scope: resourceGroup(resourceGroupName)
+  scope: rg
   params: {
     name: 'front-${suffix}'
     kind: 'app,linux,container'
@@ -70,7 +68,7 @@ module frontend 'br/public:avm/res/web/site:0.15.1' = {
 
 /* CosmosDB needed for chat history */
 module cosmosdb 'br/public:avm/res/document-db/database-account:0.12.0' = {
-  scope: resourceGroup(resourceGroupName)
+  scope: rg
   params: {
     name: 'cosmosdb-${suffix}'
     location: location
