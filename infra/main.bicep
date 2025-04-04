@@ -74,6 +74,8 @@ module cosmosdb 'br/public:avm/res/document-db/database-account:0.12.0' = {
   params: {
     name: 'cosmosdb-${suffix}'
     location: location
+    enableMultipleWriteLocations: false
+    automaticFailover: false
     sqlDatabases: [
       {
         name: 'chat'
