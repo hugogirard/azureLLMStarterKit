@@ -14,9 +14,6 @@ class Config:
     def cosmosdb_endpoint(self) -> str:
         return os.getenv('COSMOS_ENDPOINT')
     
-    def cosmosdb_key(self) -> str:
-        return os.getenv('COSMOS_KEY')
-    
     def cosmos_database(self) -> str:
         return os.getenv('COSMOS_DATABASE')
     
@@ -30,17 +27,11 @@ class Config:
     def user_principal_name_dev(self) -> str:
         return os.getenv('USER_PRINCIPAL_NAME','')
     
-    def search_ai_key(self) -> str:
-        return os.getenv('AZURE_AI_SEARCH_API_KEY')
-    
     def search_ai_endpoint(self) -> str:
         return os.getenv('AZURE_AI_SEARCH_ENDPOINT')
     
     def search_ai_index(self) -> str:
         return os.getenv('AZURE_AI_SEARCH_INDEX')
-    
-    def openai_key(self) -> str:
-        return os.getenv('AZURE_OPENAI_API_KEY')
     
     def openai_endpoint(self) -> str:
         return os.getenv('AZURE_OPENAI_ENDPOINT')
