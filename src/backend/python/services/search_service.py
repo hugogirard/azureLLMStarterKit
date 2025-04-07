@@ -2,6 +2,8 @@ from config import Config
 from azure.search.documents.aio import SearchClient
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents.models import VectorizedQuery
+#from azure.identity import DefaultAzureCredential
+from azure.identity.aio import DefaultAzureCredential
 from openai import AsyncAzureOpenAI
 from typing import ClassVar, List
 
@@ -13,7 +15,8 @@ class SearchService:
 
         config = Config()
 
-        credential = AzureKeyCredential(config.search_ai_key())
+        credential = DefaultAzureCredential()
+        #credential = AzureKeyCredential(config.search_ai_key())
 
         self.search_client = SearchClient(endpoint=config.search_ai_endpoint(),
                                           index_name=config.search_ai_index(),
@@ -40,27 +43,42 @@ class SearchService:
 
         search_result = await self.search_client.search(
             search_text=query,
-            search_fields=["title, chunk"],
-            vector_queries=[vector_query],
+            search_fields=["recipe_name, description, ingredients, instructions"],
+            vector_queries=[vector_query],        
             top=self.TOP,
-            select=["title", "storageUrl", "chunk"]
+            select=["country","city","recipe_name", "description", "ingredients", "instructions"]
         )          
 
         results = []
         async for result in search_result:
             results.append(result)          
         
-        context = self.aggregate_chunks(results)
+        context = self._aggregate_chunks(results)
         
-        prompt = self.build_prompt(query, context)
+        prompt = self._build_prompt(query, context)
 
         return prompt
+
+    def _build_prompt(self, question: str, context: str) -> str:
+        """
+        Construct the final prompt for the LLM, including the retrieved context and the user question.
+        """
+        # Instruction for the assistant on how to use the context
+        instruction = (
+            "You are an AI assistant with access to the following context from documents.\n"
+            "Use the information to answer the question accurately. If the context is insufficient, say you don't know.\n\n"
+            "Please provide a concise and informative answer based on the context provided.\n\n"
+            "always provide citation for the answer and generate response in Markdown format.\n"
+        )
+        # Include the context and then ask the question
+        prompt = f"{instruction}Context:\n{context}\n\nQuestion: {question}\nAnswer:"
+        return prompt     
 
     ###
     # Combine the text chunks from search results into a single context string.
     # This may involve filtering or truncating as needed to fit in the prompt.
     ###
-    def aggregate_chunks(self, results: list) -> str:
+    def _aggregate_chunks(self, results: list) -> str:
 
         if not results:
           return ""
@@ -71,13 +89,13 @@ class SearchService:
         context_parts = []
         for i, doc in enumerate(results, start=1):
             # Each doc is a dictionary-like result. Extract the content chunk.
-            text = doc.get("chunk", "")
+            text = f"{doc.get("description", "")}\ningredients: {doc.get("ingredients")}\ninstructions:{doc.get("instructions")}"
             if not text:
-                continue
+                continue            
             # include the title or source info for clarity
-            title = doc.get("title") #or doc.get("name") or "Document"
-            location = doc.get("storageUrl") or ""
-            source_info = f"{title} + {location}" 
+            recipe_name = doc.get("recipe_name") #or doc.get("name") or "Document"
+            location = f"country: {doc.get("storageUrl")} city: {doc.get("contry")}"
+            source_info = f"{recipe_name} + {location}" 
             # Format each chunk (numbered list with source info)
             context_parts.append(f"{i}. [{source_info}]\n{text}")
         # Join all chunks with a separator between them

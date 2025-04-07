@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from repository.session_repository import SessionRepository
 from contextlib import asynccontextmanager
 from azure.cosmos.aio import CosmosClient
+from azure.identity import DefaultAzureCredential
 from services.chat_service import ChatService
 from services.search_service import SearchService
 from semantic_kernel import Kernel
@@ -14,9 +15,8 @@ async def lifespan_event(app: FastAPI):
     
     config = Config()
 
-
     cosmos_client = CosmosClient(url=config.cosmosdb_endpoint(), 
-                                credential=config.cosmosdb_key())
+                                 credential=DefaultAzureCredential())
     
     db = cosmos_client.get_database_client(config.cosmos_database())
 
