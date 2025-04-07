@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from repository.session_repository import SessionRepository
 from contextlib import asynccontextmanager
 from azure.cosmos.aio import CosmosClient
-from azure.identity import DefaultAzureCredential
+from azure.identity.aio import DefaultAzureCredential, get_bearer_token_provider
 from services.chat_service import ChatService
 from services.search_service import SearchService
 from semantic_kernel import Kernel
@@ -15,8 +15,11 @@ async def lifespan_event(app: FastAPI):
     
     config = Config()
 
+    credential = DefaultAzureCredential()
+    token_provider = get_bearer_token_provider(credential, "https://cognitiveservices.azure.com/.default")
+
     cosmos_client = CosmosClient(url=config.cosmosdb_endpoint(), 
-                                 credential=DefaultAzureCredential())
+                                 credential=credential)
     
     db = cosmos_client.get_database_client(config.cosmos_database())
 
@@ -32,8 +35,11 @@ async def lifespan_event(app: FastAPI):
             service_id="AZURE-OPENAI-CHAT",
             deployment_name=config.openai_chat_deployment(),
             endpoint=config.openai_endpoint(),
-            api_key=config.openai_key(),
-            api_version="2024-02-01"             
+            ad_token_provider=token_provider,
+            #api_key=config.openai_key(),
+            api_version="2024-02-01"
+    
+
         )
     )
     

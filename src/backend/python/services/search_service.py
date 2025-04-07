@@ -3,7 +3,7 @@ from azure.search.documents.aio import SearchClient
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents.models import VectorizedQuery
 #from azure.identity import DefaultAzureCredential
-from azure.identity.aio import DefaultAzureCredential
+from azure.identity.aio import DefaultAzureCredential, get_bearer_token_provider
 from openai import AsyncAzureOpenAI
 from typing import ClassVar, List
 
@@ -16,16 +16,16 @@ class SearchService:
         config = Config()
 
         credential = DefaultAzureCredential()
-        #credential = AzureKeyCredential(config.search_ai_key())
+        token_provider = get_bearer_token_provider(DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default")
 
         self.search_client = SearchClient(endpoint=config.search_ai_endpoint(),
                                           index_name=config.search_ai_index(),
                                           credential=credential)
         
         self.openai_client = AsyncAzureOpenAI(
-            api_key=config.openai_key(),
             api_version="2024-10-21",
-            azure_endpoint=config.openai_endpoint()
+            azure_endpoint=config.openai_endpoint(),
+            azure_ad_token_provider=token_provider
         )   
 
         self.config = config     

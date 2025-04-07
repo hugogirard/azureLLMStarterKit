@@ -79,7 +79,7 @@ async def delete_session(sessionid: str,
       raise HTTPException(status_code=500, detail='Internal Server Error')        
 
 
-@router.delete('/all/{username}')
+@router.delete('/all/')
 async def delete_session(user_principal_name: Annotated[str, Depends(get_easy_auth_token)], 
                          logger: Annotated[Logger, Depends(get_logger)],
                          session_repository: Annotated[SessionRepository, Depends(get_session_repository)]):    
