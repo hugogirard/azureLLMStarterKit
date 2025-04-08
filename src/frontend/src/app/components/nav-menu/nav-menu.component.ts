@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { StateService } from '../../services/state.service'
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'nav-menu',
@@ -9,4 +11,15 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
 
+  constructor(private stateService: StateService,
+    private chatService: ChatService
+  ) { }
+
+  createNewChat() {
+    this.stateService.isLoading = true;
+    this.chatService.newSession().subscribe(session => {
+      this.stateService.isLoading = false;
+      console.log(session);
+    });
+  }
 }
