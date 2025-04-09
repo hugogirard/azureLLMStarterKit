@@ -28,6 +28,10 @@ export class NavMenuComponent {
   }
 
   selectSession(session: Session) {
+
+    if (this.selectedSession?.sessionId == session.sessionId)
+      return;
+
     this.selectedSession = session
     this.sessionSelected.emit(session);
   }
@@ -56,5 +60,24 @@ export class NavMenuComponent {
         this.selectedSession = session;
       }
     });
+  }
+
+  deleteSession(id: string) {
+
+    // Replace with a better windows
+    // for now we use the native browser
+    const msg = 'Are you sure you want to delete this session';
+    if (confirm(msg) === true) {
+      this.stateService.isLoading = true;
+      this.chatService.deleteSession(id)
+        .subscribe(success => {
+          this.stateService.isLoading = false;
+          if (success) {
+            this.sessions = this.sessions.filter(session => session.sessionId !== id);
+            this.selectedSession = undefined;
+            this.sessionSelected.emit(undefined);
+          }
+        })
+    }
   }
 }

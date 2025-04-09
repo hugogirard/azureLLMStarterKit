@@ -1,30 +1,3 @@
-@keyframes dotAnimation {
-
-    0%,
-    100% {
-        content: ".";
-    }
-
-    20% {
-        content: "..";
-    }
-
-    40%,
-    60% {
-        content: "...";
-    }
-
-    80% {
-        content: "..";
-    }
-}
-
-.element::after {
-    display: inline-block;
-    animation: dotAnimation 2s infinite;
-    content: ".";
-}
-
 /*  Loading screen */
 
 #splash-page {
@@ -73,43 +46,3 @@
 /* End loading screen */
 
 /* Source */
-
-.accordion-button {
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    text-align: left;
-    border: none;
-    outline: none;
-    display: flex;
-    /* Ensures items inside the button are in a row */
-    align-items: center;
-    /* Centers items vertically */
-    background-color: transparent;
-    /* No background color */
-}
-
-.accordion-button:hover {
-    background-color: transparent;
-    /* Keeps background unchanged on hover */
-}
-
-.accordion-content {
-    padding: 0 18px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease-out;
-    background-color: white;
-}
-
-.chevron {
-    margin-right: 10px;
-    /* Space between the chevron and the text */
-    transition: transform 0.2s ease;
-    /* Smooth transition for rotation */
-}
-
-.accordion-button.active .chevron {
-    transform: rotate(-90deg);
-    /* Rotate chevron to point right when active */
-}

@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Session } from '../models/session'
 import { Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 import { Message } from '../models/message';
 
 @Injectable({
@@ -54,6 +54,12 @@ export class ChatService {
                 console.log('Message created');
         }),
             catchError(this.handleError<Message>('sendQuestion')));
+    }
+
+    deleteSession(id: string): Observable<Boolean> {
+        return this.http.delete(`${environment.apiBaseUrl}/api/session/${id}`)
+            .pipe(map(_ => true),
+                catchError(this.handleError<Boolean>('deleteSession', false)))
     }
 
     /**

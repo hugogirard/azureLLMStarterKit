@@ -43,8 +43,8 @@
                         <div class="col">
                             <div class="card bg-primary text-light"
                                 [ngClass]="selectedSession?.sessionId == session.id ? 'bg-primary text-light' : 'bg-primary opacity-50 text-light'">
-                                <div class="card-body user-select-none" role="button">
-                                    <a class="card-title text-decoration-none h6" (click)="selectSession(session)">
+                                <div class="card-body user-select-none" role="button" (click)="selectSession(session)">
+                                    <a class="card-title text-decoration-none h6">
                                         <i *ngIf="session.sessionId == selectedSession?.sessionId"
                                             class="bi bi-chat-right-dots-fill me-2"></i>
                                         <span title="{{session.title}}" class="ms-1">
@@ -52,15 +52,17 @@
                                         </span>
                                     </a>
                                 </div>
-                            </div>
-                            <div class="card-footer d-flex align-items-center justify-content-between">
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-sm btn-link text-light">
-                                        <i class="bi bi-pencil-fill me-1"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-link text-light">
-                                        <i class="bi bi-trash-fill ms-1"></i>
-                                    </button>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <div class="btn-group" role="group">
+                                        <!--  Todo add rename chat -->
+                                        <!-- <button type="button" class="btn btn-sm btn-link text-light">
+                                            <i class="bi bi-pencil-fill me-1"></i>
+                                        </button> -->
+                                        <button type="button" class="btn btn-sm btn-link text-light"
+                                            (click)="deleteSession(session.id)">
+                                            <i class="bi bi-trash-fill ms-1"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
