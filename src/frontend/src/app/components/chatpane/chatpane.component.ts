@@ -4,6 +4,7 @@ import { Message } from '../../models/message';
 import { Input } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { NgFor, NgIf } from '@angular/common';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'chatpane',
@@ -17,7 +18,7 @@ export class ChatpaneComponent {
 
   messages: Message[] = []
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private stateService: StateService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedSession']) {
@@ -37,6 +38,14 @@ export class ChatpaneComponent {
   sendPrompt(prompt: string) {
     if (prompt.length == 0)
       return;
+
+    if (this.selectedSession) {
+      this.stateService.isLoading = true;
+      this.chatService.sendQuestion(this.selectedSession?.sessionId, prompt).subscribe(message => {
+        this.messages.push(message);
+        this.stateService.isLoading = false;
+      })
+    }
   }
 
 }

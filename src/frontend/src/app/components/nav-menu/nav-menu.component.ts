@@ -2,12 +2,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { StateService } from '../../services/state.service'
 import { ChatService } from '../../services/chat.service';
 import { Session } from '../../models/session';
-import { NgFor, NgIf } from '@angular/common'
+import { NgFor, NgIf, NgClass } from '@angular/common'
 
 @Component({
   selector: 'nav-menu',
   standalone: true,
-  imports: [NgFor, NgIf],
+  imports: [NgFor, NgIf, NgClass],
   templateUrl: './nav-menu.component.html',
   styleUrl: './nav-menu.component.css'
 })

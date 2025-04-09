@@ -41,28 +41,31 @@
                 <div class="row row-cols-1 g-2 px-2 d-flex flex-column align-items-start">
                     <div *ngFor="let session of sessions">
                         <div class="col">
-                            <div class="card bg-primary text-light"></div>
-                            <!-- <div class="card @(IsActiveSession(session.SessionId) ? "bg-primary text-light" : "bg-primary opacity-50 text-light")"> -->
-                            <div class="card-body user-select-none" role="button">
-                                <a class="card-title text-decoration-none h6">
-                                    <i *ngIf="session.sessionId == selectedSession?.sessionId"
-                                        class="bi bi-chat-right-dots-fill me-2"></i>
-                                    <span title="{{session.name}}" class="ms-1">
-                                        {{session.sessionId}}
-                                    </span>
-                                    <!-- @if (IsActiveSession(session.SessionId))
-                                    {
-                                        <i class="bi bi-chat-right-dots-fill me-2"></i>
-                                    }
-                                    <span title="@session.Name" class="ms-1">                                                
-                                        @{
-                                            string substring = SafeSubstring(session.Name, 20);
-                                            MarkupString html = new MarkupString(substring);
+                            <div class="card bg-primary text-light"
+                                [ngClass]="selectedSession?.sessionId == session.id ? 'bg-primary text-light' : 'bg-primary opacity-50 text-light'">
+                                <div class="card-body user-select-none" role="button">
+                                    <a class="card-title text-decoration-none h6">
+                                        <i *ngIf="session.sessionId == selectedSession?.sessionId"
+                                            class="bi bi-chat-right-dots-fill me-2"></i>
+                                        <span title="{{session.title}}" class="ms-1">
+                                            {{session.title}}
+                                        </span>
+                                        <!-- @if (IsActiveSession(session.SessionId))
+                                        {
+                                            <i class="bi bi-chat-right-dots-fill me-2"></i>
                                         }
-                                        @html
-                                    </span> -->
-                                </a>
+                                        <span title="@session.Name" class="ms-1">                                                
+                                            @{
+                                                string substring = SafeSubstring(session.Name, 20);
+                                                MarkupString html = new MarkupString(substring);
+                                            }
+                                            @html
+                                        </span> -->
+                                    </a>
+                                </div>
                             </div>
+                            <!-- <div class="card @(IsActiveSession(session.SessionId) ? "bg-primary text-light" : "bg-primary opacity-50 text-light")"> -->
+
                             <div class="card-footer d-flex align-items-center justify-content-between">
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-sm btn-link text-light">

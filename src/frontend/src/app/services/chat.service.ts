@@ -45,8 +45,15 @@ export class ChatService {
                 catchError(this.handleError<Message[]>('getMessageSession', [])))
     }
 
-    sendQuestion(sessionId: string, prompt: string) {
-
+    sendQuestion(sessionId: string, prompt: string): Observable<Message> {
+        return this.http.post<Message>(`${environment.apiBaseUrl}/api/chat/`, {
+            sessionId: sessionId,
+            question: prompt
+        }).pipe(tap(_ => {
+            if (!environment.production)
+                console.log('Message created');
+        }),
+            catchError(this.handleError<Message>('sendQuestion')));
     }
 
     /**
