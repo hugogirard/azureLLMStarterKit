@@ -27,7 +27,7 @@ export class ChatpaneComponent {
         if (this.selectedSession) {
           this.chatService.getMessageSession(this.selectedSession.sessionId)
             .subscribe(messages => {
-              messages = messages
+              this.messages = messages
             });
         }
 

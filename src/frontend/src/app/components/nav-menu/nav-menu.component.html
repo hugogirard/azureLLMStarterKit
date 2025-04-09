@@ -44,28 +44,15 @@
                             <div class="card bg-primary text-light"
                                 [ngClass]="selectedSession?.sessionId == session.id ? 'bg-primary text-light' : 'bg-primary opacity-50 text-light'">
                                 <div class="card-body user-select-none" role="button">
-                                    <a class="card-title text-decoration-none h6">
+                                    <a class="card-title text-decoration-none h6" (click)="selectSession(session)">
                                         <i *ngIf="session.sessionId == selectedSession?.sessionId"
                                             class="bi bi-chat-right-dots-fill me-2"></i>
                                         <span title="{{session.title}}" class="ms-1">
                                             {{session.title}}
                                         </span>
-                                        <!-- @if (IsActiveSession(session.SessionId))
-                                        {
-                                            <i class="bi bi-chat-right-dots-fill me-2"></i>
-                                        }
-                                        <span title="@session.Name" class="ms-1">                                                
-                                            @{
-                                                string substring = SafeSubstring(session.Name, 20);
-                                                MarkupString html = new MarkupString(substring);
-                                            }
-                                            @html
-                                        </span> -->
                                     </a>
                                 </div>
                             </div>
-                            <!-- <div class="card @(IsActiveSession(session.SessionId) ? "bg-primary text-light" : "bg-primary opacity-50 text-light")"> -->
-
                             <div class="card-footer d-flex align-items-center justify-content-between">
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-sm btn-link text-light">
@@ -74,49 +61,11 @@
                                     <button type="button" class="btn btn-sm btn-link text-light">
                                         <i class="bi bi-trash-fill ms-1"></i>
                                     </button>
-                                    <!-- <button type="button" class="btn btn-sm btn-link text-light" @onclick="@(e => OpenInput(session.SessionId,session.Name))">
-                                            <i class="bi bi-pencil-fill me-1"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-link text-light" @onclick="@(e => OpenConfirmation(session.SessionId,session.Name))">
-                                            <i class="bi bi-trash-fill ms-1"></i>
-                                        </button> -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- @foreach (var session in ChatSessions)                
-                        {
-                            <div class="col">
-                                <div class="card @(IsActiveSession(session.SessionId) ? "bg-primary text-light" : "bg-primary opacity-50 text-light")">
-                                    <div class="card-body user-select-none" role="button" @onclick="@(e => LoadChat(session.SessionId,session.Name, session.Tokens, session.SelectedFiles))">
-                                        <a class="card-title text-decoration-none h6">
-                                            @if (IsActiveSession(session.SessionId))
-                                            {
-                                                <i class="bi bi-chat-right-dots-fill me-2"></i>
-                                            }
-                                            <span title="@session.Name" class="ms-1">                                                
-                                                @{
-                                                    string substring = SafeSubstring(session.Name, 20);
-                                                    MarkupString html = new MarkupString(substring);
-                                                }
-                                                @html
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-sm btn-link text-light" @onclick="@(e => OpenInput(session.SessionId,session.Name))">
-                                                <i class="bi bi-pencil-fill me-1"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-link text-light" @onclick="@(e => OpenConfirmation(session.SessionId,session.Name))">
-                                                <i class="bi bi-trash-fill ms-1"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        } -->
             </nav>
         </div>
     </div>

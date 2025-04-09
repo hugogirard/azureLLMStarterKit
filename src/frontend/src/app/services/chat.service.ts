@@ -36,7 +36,7 @@ export class ChatService {
     }
 
     getMessageSession(sessionId: string): Observable<Message[]> {
-        return this.http.get<Message[]>(`${environment.apiBaseUrl}/api/session/${sessionId}`)
+        return this.http.get<Message[]>(`${environment.apiBaseUrl}/api/session/${sessionId}/messages`)
             .pipe(
                 tap(x => {
                     if (!environment.production)

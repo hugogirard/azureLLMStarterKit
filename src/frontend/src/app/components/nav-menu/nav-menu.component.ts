@@ -27,6 +27,11 @@ export class NavMenuComponent {
     this.getSessionsUser();
   }
 
+  selectSession(session: Session) {
+    this.selectedSession = session
+    this.sessionSelected.emit(session);
+  }
+
   createNewChat() {
     this.stateService.isLoading = true;
     this.chatService.newSession().subscribe(session => {
