@@ -19,6 +19,11 @@ class ChatService:
         "always provide citation for the answer and generate response in Markdown format.\n"
     )
 
+    SUMMARIZE_PROMPT = (
+        "Summarize this text. One to three words maximum length. Plain text only. No punctuation, markup or tags.\n"
+        "Only 20 characters no more.\n"
+    )
+
     def __init__(self, 
                  session_repository: SessionRepository, 
                  search_service: SearchService,
@@ -30,8 +35,25 @@ class ChatService:
         self.execution_settings = execution_settings
         self.search_service = search_service
     
-    async def completion(self, chat_request: ChatRequest, username: str) -> Message:
+    async def summarize(self, prompt:str) -> str:
+        history = ChatHistory()
 
+        history.add_system_message(self.SUMMARIZE_PROMPT)
+        history.add_assistant_message(prompt)
+
+        chat_client = self.kernel.get_service(type=ChatCompletionClientBase)
+
+        results = await chat_client.get_chat_message_contents(
+            chat_history=history,
+            settings=self.execution_settings,
+            kernel=self.kernel,
+            arguments=KernelArguments()
+        )
+
+        return str(results[0])
+
+    async def completion(self, chat_request: ChatRequest, username: str) -> Message:
+        
         context = await self.search_service.search(chat_request.question)
 
         system_prompt = self._build_system_prompt(context)

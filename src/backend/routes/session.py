@@ -1,10 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, Header
-from dependencies import get_session_repository, get_easy_auth_token, get_logger
+from dependencies import get_chat_service, get_session_repository, get_easy_auth_token, get_logger
 from repository.session_repository import SessionRepository
 from logging import Logger
 from models import Session, Message
 from typing import Annotated, List
+from contract import SessionTitleRequest
 import uuid
+
+from services.chat_service import ChatService
 
 router = APIRouter(prefix="/session")
 
@@ -15,8 +18,8 @@ async def new_session(logger: Annotated[Logger, Depends(get_logger)],
     try:
         
         id = str(uuid.uuid4())
-        session = Session(id=id)
-        session.session_id = id        
+        session = Session(id=id,title=id)
+        session.session_id = id              
         session.user_name = user_principal_name   
         await session_repository.create_new_session(session)
         return session   
@@ -24,6 +27,24 @@ async def new_session(logger: Annotated[Logger, Depends(get_logger)],
     except Exception as err:
         logger.error(err)
         raise HTTPException(status_code=500, detail='Internal Server Error')        
+
+@router.post('/newtitle')
+async def new_title(session_title_request:SessionTitleRequest,
+                    user_principal_name: Annotated[str, Depends(get_easy_auth_token)],
+                    chat: Annotated[ChatService, Depends(get_chat_service)],
+                    logger: Annotated[Logger, Depends(get_logger)],
+                    session_repository: Annotated[SessionRepository, Depends(get_session_repository)]) -> str:
+   
+   session = await session_repository.get_session(session_title_request.session_id,
+                                                  user_principal_name)
+   
+   title = await chat.summarize(session_title_request.prompt)
+
+   session.title = title
+
+   await session_repository.update_session(session)
+
+   return str
 
 @router.get('/all')
 async def get_session(user_principal_name: Annotated[str, Depends(get_easy_auth_token)],

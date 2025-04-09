@@ -1,3 +1,18 @@
 ### Create a new session
 POST http://0.0.0.0:8000/api/session/new
 Content-Type: application/json
+
+###
+GET http://0.0.0.0:8000/api/session/all
+
+###
+POST http://0.0.0.0:8000/api/session/newtitle
+Content-Type: application/json
+
+{
+    "sessionId": "63076b5b-1507-4569-a308-79ac851251b0",
+    "prompt": "How many flowers at the tulip festival in Ottawa ?"
+}
+
+###
+DELETE http://0.0.0.0:8000/api/session/all
