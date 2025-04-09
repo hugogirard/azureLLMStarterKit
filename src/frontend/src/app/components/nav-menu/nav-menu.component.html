@@ -27,7 +27,6 @@
     </div>
 
     <div class="flex-grow-1 flex-column justify-content-center overflow-y-auto overflow-x-hidden">
-
         <div>
             <nav class="flex-column">
                 <div class="nav-item py-2 d-grid">
@@ -40,7 +39,50 @@
                     </a>
                 </div>
                 <div class="row row-cols-1 g-2 px-2 d-flex flex-column align-items-start">
-                    <!-- @foreach (var session in ChatSessions)                
+                    <div *ngFor="let session of sessions">
+                        <div class="col">
+                            <div class="card bg-primary text-light"></div>
+                            <!-- <div class="card @(IsActiveSession(session.SessionId) ? "bg-primary text-light" : "bg-primary opacity-50 text-light")"> -->
+                            <div class="card-body user-select-none" role="button">
+                                <a class="card-title text-decoration-none h6">
+                                    <i *ngIf="session.sessionId == selectedSession?.sessionId"
+                                        class="bi bi-chat-right-dots-fill me-2"></i>
+                                    <span title="{{session.name}}" class="ms-1">
+                                        {{session.sessionId}}
+                                    </span>
+                                    <!-- @if (IsActiveSession(session.SessionId))
+                                    {
+                                        <i class="bi bi-chat-right-dots-fill me-2"></i>
+                                    }
+                                    <span title="@session.Name" class="ms-1">                                                
+                                        @{
+                                            string substring = SafeSubstring(session.Name, 20);
+                                            MarkupString html = new MarkupString(substring);
+                                        }
+                                        @html
+                                    </span> -->
+                                </a>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-sm btn-link text-light">
+                                        <i class="bi bi-pencil-fill me-1"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-link text-light">
+                                        <i class="bi bi-trash-fill ms-1"></i>
+                                    </button>
+                                    <!-- <button type="button" class="btn btn-sm btn-link text-light" @onclick="@(e => OpenInput(session.SessionId,session.Name))">
+                                            <i class="bi bi-pencil-fill me-1"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-link text-light" @onclick="@(e => OpenConfirmation(session.SessionId,session.Name))">
+                                            <i class="bi bi-trash-fill ms-1"></i>
+                                        </button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @foreach (var session in ChatSessions)                
                         {
                             <div class="col">
                                 <div class="card @(IsActiveSession(session.SessionId) ? "bg-primary text-light" : "bg-primary opacity-50 text-light")">
@@ -72,7 +114,6 @@
                                 </div>
                             </div>
                         } -->
-                </div>
             </nav>
         </div>
     </div>

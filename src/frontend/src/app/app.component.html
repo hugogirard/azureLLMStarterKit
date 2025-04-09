@@ -1,7 +1,7 @@
 <main class="h-100 d-flex flex-row justify-content-start">
-  <nav-menu></nav-menu>
+  <nav-menu (sessionSelected)="onNewSelectedSession($event)"></nav-menu>
   <loading></loading>
   <section class="flex-grow-1">
-    <chatpane></chatpane>
+    <chatpane [selectedSession]="selectedSession"></chatpane>
   </section>
 </main>
