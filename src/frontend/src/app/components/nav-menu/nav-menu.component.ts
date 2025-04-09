@@ -33,6 +33,7 @@ export class NavMenuComponent {
       this.stateService.isLoading = false;
       this.selectedSession = session ?? undefined;
       if (session) {
+        this.selectedSession = session;
         this.sessionSelected.emit(session);
         this.sessions.push(session);
       }
@@ -44,6 +45,11 @@ export class NavMenuComponent {
     this.chatService.getSessions().subscribe(sessions => {
       this.stateService.isLoading = false;
       this.sessions = sessions;
+      if (this.sessions.length > 0) {
+        const session = sessions[0]
+        this.sessionSelected.emit(session);
+        this.selectedSession = session;
+      }
     });
   }
 }

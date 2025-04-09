@@ -5,6 +5,8 @@ import { ChatpaneComponent } from './components/chatpane/chatpane.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { HttpClientModule } from '@angular/common/http';
 import { Session } from './models/session';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,8 @@ import { Session } from './models/session';
     NavMenuComponent,
     ChatpaneComponent,
     LoadingComponent,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

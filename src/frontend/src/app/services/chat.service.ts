@@ -4,6 +4,7 @@ import { Session } from '../models/session'
 import { Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { catchError, tap } from 'rxjs/operators';
+import { Message } from '../models/message';
 
 @Injectable({
     providedIn: 'root'
@@ -32,6 +33,20 @@ export class ChatService {
                         console.log(`${x.length} sessions found`);
                 }),
                 catchError(this.handleError<Session[]>('getSessions', [])))
+    }
+
+    getMessageSession(sessionId: string): Observable<Message[]> {
+        return this.http.get<Message[]>(`${environment.apiBaseUrl}/api/session/${sessionId}`)
+            .pipe(
+                tap(x => {
+                    if (!environment.production)
+                        console.log(`${x.length} messages found`);
+                }),
+                catchError(this.handleError<Message[]>('getMessageSession', [])))
+    }
+
+    sendQuestion(sessionId: string, prompt: string) {
+
     }
 
     /**
