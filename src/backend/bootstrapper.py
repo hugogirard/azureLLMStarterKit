@@ -36,10 +36,7 @@ async def lifespan_event(app: FastAPI):
             deployment_name=config.openai_chat_deployment(),
             endpoint=config.openai_endpoint(),
             ad_token_provider=token_provider,
-            #api_key=config.openai_key(),
             api_version="2024-02-01"
-    
-
         )
     )
     
