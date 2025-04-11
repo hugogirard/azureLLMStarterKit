@@ -22,7 +22,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'ChatBot';
   selectedSession?: Session
 
   onNewSelectedSession(newSelectedSession: Session) {

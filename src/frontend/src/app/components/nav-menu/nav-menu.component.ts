@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, input, Output, SimpleChanges } from '@angular/core';
 import { StateService } from '../../services/state.service'
 import { ChatService } from '../../services/chat.service';
 import { Session } from '../../models/session';
@@ -13,6 +13,8 @@ import { NgFor, NgIf, NgClass } from '@angular/common'
 })
 export class NavMenuComponent {
 
+  @Input() newTitle: string = '';
+
   sessions: Session[] = [];
 
   selectedSession?: Session;
@@ -25,6 +27,15 @@ export class NavMenuComponent {
 
   ngOnInit() {
     this.getSessionsUser();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['newTitle']) {
+      if (changes['newTitle'].currentValue != null && changes['newTitle'].currentValue != '') {
+        if (this.selectedSession)
+          this.selectedSession.title = changes['newTitle'].currentValue;
+      }
+    }
   }
 
   selectSession(session: Session) {
@@ -42,6 +53,7 @@ export class NavMenuComponent {
       this.stateService.isLoading = false;
       this.selectedSession = session ?? undefined;
       if (session) {
+        session.isNewChat = true;
         this.selectedSession = session;
         this.sessionSelected.emit(session);
         this.sessions.push(session);

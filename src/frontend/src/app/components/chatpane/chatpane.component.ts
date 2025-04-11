@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Session } from '../../models/session';
 import { Message } from '../../models/message';
 import { Input } from '@angular/core';
@@ -18,6 +18,8 @@ export class ChatpaneComponent {
   @Input() selectedSession?: Session;
 
   @ViewChild('messagesInChatDiv') messagesInChatDiv?: ElementRef;
+
+  @Output() onNewTitle = new EventEmitter<string>();
 
   messages: Message[] = []
 
@@ -43,6 +45,18 @@ export class ChatpaneComponent {
   sendPrompt(prompt: HTMLInputElement) {
     if (prompt.value.length == 0)
       return;
+
+    // Validate if this is a new chat
+    // if it's the case we get the title
+    if (this.selectedSession?.isNewChat) {
+      this.selectedSession.isNewChat = false;
+      this.chatService.newTile(this.selectedSession.id, prompt.value)
+        .subscribe(title => {
+          if (this.selectedSession)
+            this.selectedSession.title = title;
+          this.onNewTitle.emit(title);
+        });
+    }
 
     if (this.selectedSession) {
       this.stateService.isLoading = true;

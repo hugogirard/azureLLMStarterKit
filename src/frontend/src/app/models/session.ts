@@ -4,4 +4,5 @@ export interface Session {
     title: string;
     type: string;
     username: string;
+    isNewChat: boolean;
 }

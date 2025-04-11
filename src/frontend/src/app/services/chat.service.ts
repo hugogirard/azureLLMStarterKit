@@ -25,6 +25,17 @@ export class ChatService {
             )
     }
 
+    newTile(sessionId: string, prompt: string): Observable<string> {
+        return this.http.post<string>(`${environment.apiBaseUrl}/api/session/newtitle`, {
+            sessionId: sessionId,
+            prompt: prompt
+        }).pipe(tap(x => {
+            if (!environment.production)
+                console.log(`Get new title for session ${sessionId}, title: ${x}`);
+        }),
+            catchError(this.handleError<string>('sendQuestion')));
+    }
+
     getSessions(): Observable<Session[]> {
         return this.http.get<Session[]>(`${environment.apiBaseUrl}/api/session/all`)
             .pipe(

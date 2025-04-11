@@ -1,3 +1,117 @@
+/* General Layout */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+main {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.nav-menu {
+    width: 300px;
+    background-color: var(--neutral-lighter);
+    border-right: 1px solid var(--neutral-light);
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-menu-header {
+    padding: 16px;
+    background-color: var(--neutral-primary);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-menu-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.nav-item {
+    margin: 8px 0;
+    cursor: pointer;
+}
+
+.nav-item:hover {
+    background-color: var(--neutral-quaternary-alt);
+}
+
+.nav-item.active {
+    background-color: var(--accent-fill-rest);
+    color: var(--neutral-foreground-rest);
+}
+
+/* Chat Pane */
+.chat-pane {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--neutral-lighter-alt);
+}
+
+.chat-header {
+    padding: 16px;
+    background-color: var(--neutral-primary);
+    color: var(--white);
+    font-size: 1.25rem;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.chat-message {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-message.user {
+    align-items: flex-start;
+}
+
+.chat-message.assistant {
+    align-items: flex-end;
+}
+
+.chat-message .message-content {
+    padding: 8px 12px;
+    border-radius: 8px;
+    max-width: 70%;
+}
+
+.chat-message.user .message-content {
+    background-color: var(--neutral-fill-rest);
+    color: var(--neutral-foreground-rest);
+}
+
+.chat-message.assistant .message-content {
+    background-color: var(--accent-fill-rest);
+    color: var(--neutral-foreground-rest);
+}
+
+/* Chat Input */
+.chat-input {
+    padding: 16px;
+    background-color: var(--neutral-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid var(--neutral-quaternary-alt);
+}
+
 /*  Loading screen */
 
 #splash-page {
@@ -44,5 +158,3 @@
 }
 
 /* End loading screen */
-
-/* Source */
