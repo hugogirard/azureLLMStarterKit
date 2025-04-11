@@ -14,5 +14,25 @@ Content-Type: application/json
     "prompt": "How many flowers at the tulip festival in Ottawa ?"
 }
 
+### 
+POST http://0.0.0.0:8000/api/chat
+Content-Type: application/json
+
+{
+    "sessionId": "64ffbb23-36a1-47f7-b259-a288b4895140",    
+    "question": "Good tasty recipe from Canada?"
+
+}
+
 ###
 DELETE http://0.0.0.0:8000/api/session/all
+
+### 
+POST http://0.0.0.0:8000/api/session/newtitle
+Content-Type: application/json
+
+{
+    "sessionId": "faebe1ff-4a42-4dff-b589-133b5f3de864",    
+    "prompt": "Good food in Canada?"
+
+}

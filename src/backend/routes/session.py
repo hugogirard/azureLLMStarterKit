@@ -7,7 +7,7 @@ from typing import Annotated, List
 from contract import SessionTitleRequest
 import uuid
 
-from services.chat_service import ChatService
+from services.kernel_chat_service import KernelChatService
 
 router = APIRouter(prefix="/session")
 
@@ -31,7 +31,7 @@ async def new_session(logger: Annotated[Logger, Depends(get_logger)],
 @router.post('/newtitle')
 async def new_title(session_title_request:SessionTitleRequest,
                     user_principal_name: Annotated[str, Depends(get_easy_auth_token)],
-                    chat: Annotated[ChatService, Depends(get_chat_service)],
+                    chat: Annotated[KernelChatService, Depends(get_chat_service)],
                     logger: Annotated[Logger, Depends(get_logger)],
                     session_repository: Annotated[SessionRepository, Depends(get_session_repository)]) -> str:
    
@@ -42,7 +42,10 @@ async def new_title(session_title_request:SessionTitleRequest,
 
    session.title = title
 
-   await session_repository.update_session(session)
+   await session_repository.update_session(Session(id=session.id,
+                                                   title=title,
+                                                   session_id=session.session_id,
+                                                   username=user_principal_name))
 
    return str
 
