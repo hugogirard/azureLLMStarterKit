@@ -2,7 +2,7 @@ from config import Config
 from fastapi import FastAPI
 from fastapi import Request, HTTPException
 from repository.session_repository import SessionRepository
-from services.chat_service import ChatService
+from services.kernel_chat_service import KernelChatService
 from logging import Logger
 import logging
 import sys
@@ -33,7 +33,7 @@ _logger.addHandler(stream_handler)
 # Dependency methods using dependency 
 # injection in the route
 ######################################
-def get_chat_service(request: Request) -> ChatService:
+def get_chat_service(request: Request) -> KernelChatService:
     return request.app.state.chat_service
 
 def get_session_repository(request: Request) -> SessionRepository:

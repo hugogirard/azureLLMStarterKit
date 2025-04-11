@@ -9,14 +9,15 @@ from semantic_kernel import Kernel
 from services.search_service import SearchService
 from semantic_kernel.functions.kernel_arguments import KernelArguments
 from semantic_kernel.connectors.ai.open_ai import AzureChatPromptExecutionSettings
+from .base_chat_service import BaseChatService
 
-class ChatService:
+class KernelChatService(BaseChatService):
 
     SYSTEM_PROMPT = (
         "You are an AI assistant with access to the following context from documents.\n"
-        "Use the information to answer the question accurately. If the context is insufficient, say you don't know.\n\n"
+        "Use the information to answer the question accurately only using the provided context or previous conversation.\n"
+        "If the context is insufficient, say you don't know.\n"
         "Please provide a concise and informative answer based on the context provided.\n\n"
-        "always provide citation for the answer and generate response in Markdown format.\n"
     )
 
     SUMMARIZE_PROMPT = (
